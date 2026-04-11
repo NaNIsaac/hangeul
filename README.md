@@ -54,7 +54,7 @@ han.disassemble("과")  # "ㄱㅗㅏ"
 ```python
 # 자소 단위 유사도 (0.0 ~ 1.0)
 # '값'과 '갑'은 글자 단위에선 0점이지만 자소 단위에선 0.75점입니다.
-hangeul.similarity("값", "갑")  # 0.75
+han.similarity("값", "갑")  # 0.75
 
 # 초성 검색 및 부분 일치
 han.matches("서강대학교", "ㅅㄱㄷ")  # True
