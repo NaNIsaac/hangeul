@@ -2,5 +2,94 @@ Metadata-Version: 2.4
 Name: hangeul
 Version: 0.1.0
 Summary: Add your description here
-Requires-Python: >=3.14
+Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+Requires-Dist: pytest>=9.0.3
+
+# hangeul
+
+파이썬 환경에서 한글을 다루기 위한 현대적인 툴킷입니다. 
+
+기존의 파이썬용 한글 라이브러리들은 최신 개발 환경(Type Hinting, Python 3.10+ 등)에 최적화되어 있지 않거나 기능이 파편화되어 있었습니다. hangeul은 조합/분해 오토마타를 기반으로 실무에서 즉시 사용 가능한 강력한 기능들을 통합하여 제공합니다.
+
+---
+
+## 핵심 강점
+
+* **조사(Josa) 처리**: 단순히 받침 유무만 체크하지 않고 영문 약어(SDK, IBM 등)의 발음과 숫자(7, 8 등)의 종성 발음을 인식하여 조사를 선택합니다.
+* **자소 단위 유사도 매칭**: 단어 단위가 아닌 초/중/종성 단위의 편집 거리(Levenshtein Distance)를 계산하여 오타 교정에 최적화된 유사도 점수를 제공합니다.
+* **오토마타 기반 조합/분해**: 연음 법칙을 고려한 조합 로직을 통해 `ㄱㅏㅂㅅㅇㅣ`를 `값이`로 정확히 조립합니다. 
+* **Zero Dependency**: 외부 라이브러리 의존성 없이 파이썬 표준 라이브러리만으로 동작합니다.
+* **Modern Development**: 전 기능에 대한 타입 힌팅을 지원하며, `uv` 및 최신 파이썬 환경에 최적화되어 있습니다.
+
+---
+
+## 주요 기능 및 예제
+
+### 1. 조사(Josa) 결합
+단순 문자열 비교가 아닌 발음 기반의 처리를 수행합니다.
+
+```python
+import hangeul
+
+# 영문 약어 발음 인식
+hangeul.attach("SDK", "은/는")  # "SDK는" (에스디케이 - 받침 없음)
+hangeul.attach("IBM", "이/가")  # "IBM이" (아이비엠 - ㅁ받침)
+
+# 숫자 종성 인식
+hangeul.attach("7", "으로/로")  # "7로" (칠 - ㄹ받침 예외)
+hangeul.attach("10", "을/를")  # "10을" (십 - ㅂ받침)
+
+# 괄호 제거 후 판별
+hangeul.attach("애플(Apple)", "이/가")  # "애플(Apple)이"
+```
+
+### 2. 조합 및 분해 (Assemble / Disassemble)
+한국어 음운 규칙을 따르는 조립과 완전 분해를 지원합니다.
+
+```python
+# 조합 (연음 법칙 적용)
+hangeul.assemble("ㄱㅏㅂㅅㅇㅣ")  # "값이"
+
+# 분해 (겹받침/복합모음 완전 분리)
+hangeul.disassemble("값")  # "ㄱㅏㅂㅅ"
+hangeul.disassemble("과")  # "ㄱㅗㅏ"
+```
+
+### 3. 유사도 분석 및 검색
+오타에 강한 검색 기능을 구현할 때 유용합니다.
+
+```python
+# 자소 단위 유사도 (0.0 ~ 1.0)
+# '값'과 '갑'은 글자 단위에선 0점이지만 자소 단위에선 0.75점입니다.
+hangeul.jamo_similarity("값", "갑")  # 0.75
+
+# 초성 검색 및 부분 일치
+hangeul.matches("서강대학교", "ㅅㄱㄷ")  # True
+hangeul.matches("한글", "ㅎㅏㄴ")  # True
+```
+
+### 4. 숫자 한글 변환
+숫자 단위를 분석하여 관습적인 한글 읽기 방식으로 변환합니다.
+
+```python
+hangeul.num2han(1234567)  # "백이십삼만사천오백육십칠"
+hangeul.num2han(10000)    # "만" (일만 -> 만 축약 적용)
+```
+
+---
+
+## 설치
+
+```bash
+pip install hangeul
+# or
+uv add hangeul
+```
+
+## 환경
+* Python 3.10 이상 권장
+* 의존성 없음 (Standard Library Only)
+
+## 기여 및 문의
+버그 리포트나 기능 제안은 이슈 트래커를 이용해 주세요. High Cohesion, Low Coupling 원칙을 준수하며 관리됩니다.

@@ -20,7 +20,7 @@ def _levenshtein_distance(s1: str, s2: str) -> int:
 
     return previous_row[-1]
 
-def jamo_similarity(str1: str, str2: str) -> float:
+def similarity(str1: str, str2: str) -> float:
     """
     두 문자열을 자소 단위로 분해하여 유사도(0.0 ~ 1.0)를 측정합니다.
     1.0에 가까울수록 두 문자열이 유사함을 의미합니다.

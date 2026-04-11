@@ -27,7 +27,7 @@ from .constants import (
     JUNGSOENG,
     JONGSOENG,
 )
-from .similarity import jamo_similarity
+from .similarity import similarity
 from .number import num2han
 
 
