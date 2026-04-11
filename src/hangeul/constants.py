@@ -51,12 +51,3 @@ JONGSOENG: Final[tuple[str, ...]] = 종성
 DOUBLE_JONG_MAP: MappingProxyType[tuple[str, str], str] = 겹받침맵
 COMPOUND_JUNG_MAP: MappingProxyType[tuple[str, str], str] = 복합모음맵
 QWERTY_HANGEUL_MAP: MappingProxyType[str, str] = 쿼티한글맵
-
-__all__: list[str]  = [
-    "CHOSOENG",
-    "JUNGSOENGS",
-    "JONGSOENGS",
-    "DOUBLE_JONG_MAP",
-    "COMPOUND_JUNG_MAP",
-    "QWERTY_HANGEUL_MAP"
-]

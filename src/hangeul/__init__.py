@@ -63,6 +63,6 @@ __all__: list[str] = [
     "JUNGSOENG",
     "JONGSOENG",
 
-    "jamo_similarity",
+    "similarity",
     "num2han"
 ]
