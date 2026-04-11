@@ -18,22 +18,22 @@
 
 ## 주요 기능 및 예제
 
-### 1. 조사(Josa) 결합
+### 1. 조사 결합
 단순 문자열 비교가 아닌 발음 기반의 처리를 수행합니다.
 
 ```python
-import hangeul
+import hangeul as han
 
 # 영문 약어 발음 인식
-hangeul.attach("SDK", "은/는")  # "SDK는" (에스디케이 - 받침 없음)
-hangeul.attach("IBM", "이/가")  # "IBM이" (아이비엠 - ㅁ받침)
+han.attach("SDK", "은/는")  # "SDK는" (에스디케이 - 받침 없음)
+han.attach("IBM", "이/가")  # "IBM이" (아이비엠 - ㅁ받침)
 
 # 숫자 종성 인식
-hangeul.attach("7", "으로/로")  # "7로" (칠 - ㄹ받침 예외)
-hangeul.attach("10", "을/를")  # "10을" (십 - ㅂ받침)
+han.attach("7", "으로/로")  # "7로" (칠 - ㄹ받침 예외)
+han.attach("10", "을/를")  # "10을" (십 - ㅂ받침)
 
 # 괄호 제거 후 판별
-hangeul.attach("애플(Apple)", "이/가")  # "애플(Apple)이"
+han.attach("애플(Apple)", "이/가")  # "애플(Apple)이"
 ```
 
 ### 2. 조합 및 분해 (Assemble / Disassemble)
@@ -41,11 +41,11 @@ hangeul.attach("애플(Apple)", "이/가")  # "애플(Apple)이"
 
 ```python
 # 조합 (연음 법칙 적용)
-hangeul.assemble("ㄱㅏㅂㅅㅇㅣ")  # "값이"
+han.assemble("ㄱㅏㅂㅅㅇㅣ")  # "값이"
 
 # 분해 (겹받침/복합모음 완전 분리)
-hangeul.disassemble("값")  # "ㄱㅏㅂㅅ"
-hangeul.disassemble("과")  # "ㄱㅗㅏ"
+han.disassemble("값")  # "ㄱㅏㅂㅅ"
+han.disassemble("과")  # "ㄱㅗㅏ"
 ```
 
 ### 3. 유사도 분석 및 검색
@@ -57,27 +57,27 @@ hangeul.disassemble("과")  # "ㄱㅗㅏ"
 hangeul.similarity("값", "갑")  # 0.75
 
 # 초성 검색 및 부분 일치
-hangeul.matches("서강대학교", "ㅅㄱㄷ")  # True
-hangeul.matches("한글", "ㅎㅏㄴ")  # True
+han.matches("서강대학교", "ㅅㄱㄷ")  # True
+han.matches("한글", "ㅎㅏㄴ")  # True
 ```
 
 ### 4. 숫자 한글 변환
 숫자 단위를 분석하여 관습적인 한글 읽기 방식으로 변환합니다.
 
 ```python
-hangeul.num2han(1234567)  # "백이십삼만사천오백육십칠"
-hangeul.num2han(10000)    # "만" (일만 -> 만 축약 적용)
+han.num2han(1234567)  # "백이십삼만사천오백육십칠"
+han.num2han(10000)    # "만" (일만 -> 만 축약 적용)
 ```
 
 ---
+### 설치
 
-## 설치
-
-```bash
+```python
 pip install hangeul
 # or
 uv add hangeul
 ```
+
 
 ## 환경
 * Python 3.10 이상 권장
