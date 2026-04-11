@@ -1,5 +1,14 @@
 from hangeul.josa import attach, get_josa
 
+
+def test_get_josa():
+    """get_josa 단독 기능 테스트"""
+    assert get_josa("사과", "이/가") == "가"
+    assert get_josa("수박", "이/가") == "이"
+    assert get_josa("강", "으로/로") == "으로"
+    assert get_josa("물", "으로/로") == "로"
+    assert get_josa("1", "이/가") == "이"
+
 def test_josa_basic():
     assert attach("사과", "이/가") == "사과가"
     assert attach("수박", "이/가") == "수박이"

@@ -14,7 +14,8 @@ def num2han(number: int | str) -> str:
     """
     num_str = str(number).strip().replace(",", "")
     if not num_str.isdigit():
-        if not num_str: return ""
+        if not num_str:
+            return ""
         raise ValueError(f"숫자만 입력 가능합니다: {num_str}")
     
     if int(num_str) == 0:

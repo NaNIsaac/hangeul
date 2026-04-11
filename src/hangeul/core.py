@@ -53,7 +53,8 @@ def assemble(text: str) -> str:
                         else:
                             result.append(char)
             else:  # 초성만 있거나 새로 시작
-                if cho_idx != -1: flush()
+                if cho_idx != -1:
+                    flush()
                 if char in _CHO_IDX:
                     cho_idx = _CHO_IDX[char]
                 else:
