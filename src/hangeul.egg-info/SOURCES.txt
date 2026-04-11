@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+src/hangeul/matching.py
+src/hangeul.egg-info/PKG-INFO
+src/hangeul.egg-info/SOURCES.txt
+src/hangeul.egg-info/dependency_links.txt
+src/hangeul.egg-info/top_level.txt
