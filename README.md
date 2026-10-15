@@ -7,12 +7,10 @@
 [![Tests](https://github.com/NaNIsaac/hangeul/actions/workflows/tests.yml/badge.svg)](https://github.com/NaNIsaac/hangeul/actions/workflows/tests.yml)
 [![License](https://img.shields.io/pypi/l/hangeul)](https://github.com/NaNIsaac/hangeul/blob/main/LICENSE)
 
-**English summary.** `hangeul` is a small, dependency-free Python library for Korean (Hangul) text.
-It splits syllables into jamo and assembles jamo back into syllables (including double final
-consonants and liaison, e.g. `ㄱㅏㅂㅅㅇㅣ` -> `값이`), picks the right particle (josa) after a
-word, including numbers and uppercase acronyms (`IBM이`, `SDK는`, `7로`), supports initial-consonant
-(choseong) search, measures jamo-level string similarity, and reads numbers aloud in Korean
-(`1234` -> `천이백삼십사`). Python 3.10+.
+**English summary.** `hangeul` is a dependency-free Python library (3.10+) for Korean text:
+jamo split and assembly (`ㄱㅏㅂㅅㅇㅣ` -> `값이`), particle (josa) selection that handles numbers
+and acronyms (`IBM이`, `7로`), initial-consonant (choseong) search, jamo-level similarity, and
+Korean number reading (`1234` -> `천이백삼십사`).
 
 ## 설치
 
@@ -78,7 +76,7 @@ print(han.num2han(1234567))                 # 백이십삼만사천오백육십�
 | `get_chosung(text)` | 각 음절의 초성을 추출합니다 (`"한글"` -> `"ㅎㄱ"`). |
 | `matches(target, query, choseong_only=False)` | 검색어가 초성만으로 이루어져 있으면 초성 비교, 아니면 자모 단위 부분 문자열 비교를 합니다. `choseong_only=True`면 검색어도 초성으로 바꿔 비교합니다. |
 | `search_filter(targets, query)` | `matches`를 만족하는 항목만 남긴 리스트를 반환합니다. |
-| `similarity(a, b)` | 두 문자열을 자모로 분해한 뒤 편집 거리로 0.0 ~ 1.0 사이의 유사도를 계산합니다. |
+| `similarity(str1, str2)` | 두 문자열을 자모로 분해한 뒤 편집 거리로 0.0 ~ 1.0 사이의 유사도를 계산합니다. |
 
 ### 문자 판별
 
