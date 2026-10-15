@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "hangeul: Korean (Hangul) text toolkit for Python"
+type: software
+authors:
+  - family-names: Yong
+    given-names: Isaac
+    email: isaacyong@naver.com
+version: 0.1.1
+date-released: "2026-04-11"
+license: MIT
+repository-code: "https://github.com/NaNIsaac/hangeul"
+url: "https://pypi.org/project/hangeul/"
+keywords:
+  - korean
+  - hangul
+  - jamo
+  - nlp
+  - text-processing

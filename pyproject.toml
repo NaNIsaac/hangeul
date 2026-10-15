@@ -1,18 +1,51 @@
 [project]
 name = "hangeul"
 version = "0.1.1"
-description = "Add your description here"
+description = "Korean (Hangul) text toolkit: jamo assemble/disassemble, josa selection, choseong search, similarity, number reading"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    "pytest>=9.0.3",
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Isaac Yong", email = "isaacyong@naver.com" }]
+keywords = [
+    "korean",
+    "hangul",
+    "hangeul",
+    "jamo",
+    "josa",
+    "choseong",
+    "nlp",
+    "text-processing",
 ]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Natural Language :: Korean",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Text Processing :: Linguistic",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/NaNIsaac/hangeul"
+Repository = "https://github.com/NaNIsaac/hangeul"
+Issues = "https://github.com/NaNIsaac/hangeul/issues"
+Changelog = "https://github.com/NaNIsaac/hangeul/blob/main/CHANGELOG.md"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "pytest>=8",
     "ruff>=0.15.10",
 ]
