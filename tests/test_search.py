@@ -16,3 +16,10 @@ def test_search_filter():
     list_data = ["사과", "수박", "복숭아", "포도"]
     assert search_filter(list_data, "ㅅㅂ") == ["수박"]
     assert search_filter(list_data, "ㅅ") == ["사과", "수박", "복숭아"]
+
+def test_choseong_only_converts_query():
+    """choseong_only=True면 검색어도 초성으로 변환해 비교"""
+    assert matches("서강대학교", "서강", choseong_only=True) is True
+    assert matches("서강대학교", "소고", choseong_only=True) is True
+    assert matches("서강대학교", "ㅅㄱ", choseong_only=True) is True
+    assert matches("서강대학교", "강남", choseong_only=True) is False

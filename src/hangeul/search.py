@@ -33,7 +33,7 @@ def matches(target: str, query: str, choseong_only: bool = False) -> bool:
 
     if is_query_chosung:
         # 대상의 초성과 쿼리를 비교
-        return query in get_chosung(target)
+        return get_chosung(query) in get_chosung(target)
     
     # 2. 완성형/자소가 섞인 경우 자소 단위 분해 검색 (예: "ㅎㅏㄴㄱ" 검색 시 "한글" 매칭)
     return disassemble(query) in disassemble(target)

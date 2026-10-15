@@ -29,3 +29,9 @@ def test_round_trip():
     targets = ["한글", "값이", "앉아", "도전", "학교"]
     for t in targets:
         assert assemble(disassemble(t)) == t
+
+def test_assemble_lone_vowel_then_consonant():
+    """초성 없는 모음 뒤의 자음은 앞 모음과 합쳐지지 않아야 함"""
+    assert assemble("ㅏㄱ") == "ㅏㄱ"
+    assert assemble("ㅗㄱㅏ") == "ㅗ가"
+    assert assemble("ㅏㄳ") == "ㅏㄳ"
