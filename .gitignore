@@ -1,2 +1,8 @@
-# Git Ignore
+__pycache__/
+*.egg-info/
+.venv/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
 .codigest/
