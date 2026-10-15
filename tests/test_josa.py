@@ -41,3 +41,16 @@ def test_josa_parentheses():
     """괄호 처리 테스트"""
     assert attach("애플(Apple)", "이/가") == "애플(Apple)이"
     assert attach("삼성(Samsung)", "은/는") == "삼성(Samsung)은"
+
+def test_josa_pattern_order_independent():
+    """조사 패턴의 앞뒤 순서와 관계없이 같은 결과"""
+    for word, pattern, expected in [
+        ("책", "은/는", "은"), ("책", "는/은", "은"),
+        ("사과", "은/는", "는"), ("사과", "는/은", "는"),
+        ("책", "을/를", "을"), ("책", "를/을", "을"),
+        ("사과", "을/를", "를"), ("사과", "를/을", "를"),
+        ("책", "와/과", "과"), ("책", "과/와", "과"),
+        ("사과", "와/과", "와"), ("사과", "과/와", "와"),
+        ("책", "가/이", "이"), ("사과", "가/이", "가"),
+    ]:
+        assert get_josa(word, pattern) == expected, (word, pattern)

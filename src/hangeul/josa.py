@@ -16,6 +16,9 @@ _JOSA_MAP: Final = MappingProxyType({
     "예요/이에요": ("예요", "이에요"),
 })
 
+# 패턴 순서와 무관하게 찾도록 정렬된 키로 색인
+_JOSA_LOOKUP: Final = {"/".join(sorted(k.split("/"))): v for k, v in _JOSA_MAP.items()}
+
 # 로 계열 조사는 'ㄹ' 받침 예외 규칙을 동일하게 공유함
 _RO_JOSAS: Final[tuple[str, ...]] = ("로/으로", "로서/으로서", "로써/으로써", "로부터/으로부터")
 
@@ -87,8 +90,8 @@ def get_josa(word: str, pattern: str) -> str:
             return ro if not has_bat or jong_idx == 8 else euro
 
         # 일반 조사 처리
-        case p if p in _JOSA_MAP:
-            vowel_case, consonant_case = _JOSA_MAP[p]
+        case p if p in _JOSA_LOOKUP:
+            vowel_case, consonant_case = _JOSA_LOOKUP[p]
             return consonant_case if has_bat else vowel_case
 
         # 맵에 없는 패턴은 (받침있음/받침없음) 순서로 가정하여 처리
