@@ -1,87 +1,111 @@
 # hangeul
 
-파이썬 환경에서 한글을 다루기 위한 현대적인 툴킷입니다. 
+파이썬용 한글 텍스트 처리 도구 모음입니다.
 
-기존의 파이썬용 한글 라이브러리들은 최신 개발 환경(Type Hinting, Python 3.10+ 등)에 최적화되어 있지 않거나 기능이 파편화되어 있었습니다. hangeul은 조합/분해 오토마타를 기반으로 실무에서 즉시 사용 가능한 강력한 기능들을 통합하여 제공합니다.
+[![PyPI](https://img.shields.io/pypi/v/hangeul)](https://pypi.org/project/hangeul/)
+[![Python](https://img.shields.io/pypi/pyversions/hangeul)](https://pypi.org/project/hangeul/)
+[![Tests](https://github.com/NaNIsaac/hangeul/actions/workflows/tests.yml/badge.svg)](https://github.com/NaNIsaac/hangeul/actions/workflows/tests.yml)
+[![License](https://img.shields.io/pypi/l/hangeul)](https://github.com/NaNIsaac/hangeul/blob/main/LICENSE)
 
----
+**English summary.** `hangeul` is a small, dependency-free Python library for Korean (Hangul) text.
+It splits syllables into jamo and assembles jamo back into syllables (including double final
+consonants and liaison, e.g. `ㄱㅏㅂㅅㅇㅣ` -> `값이`), picks the right particle (josa) after a
+word, including numbers and uppercase acronyms (`IBM이`, `SDK는`, `7로`), supports initial-consonant
+(choseong) search, measures jamo-level string similarity, and reads numbers aloud in Korean
+(`1234` -> `천이백삼십사`). Python 3.10+.
 
-## 핵심 강점
+## 설치
 
-* **조사(Josa) 처리**: 단순히 받침 유무만 체크하지 않고 영문 약어(SDK, IBM 등)의 발음과 숫자(7, 8 등)의 종성 발음을 인식하여 조사를 선택합니다.
-* **자소 단위 유사도 매칭**: 단어 단위가 아닌 초/중/종성 단위의 편집 거리(Levenshtein Distance)를 계산하여 오타 교정에 최적화된 유사도 점수를 제공합니다.
-* **오토마타 기반 조합/분해**: 연음 법칙을 고려한 조합 로직을 통해 `ㄱㅏㅂㅅㅇㅣ`를 `값이`로 정확히 조립합니다. 
-* **Zero Dependency**: 외부 라이브러리 의존성 없이 파이썬 표준 라이브러리만으로 동작합니다.
-* **Modern Development**: 전 기능에 대한 타입 힌팅을 지원하며, `uv` 및 최신 파이썬 환경에 최적화되어 있습니다.
+```bash
+pip install hangeul
+# 또는
+uv add hangeul
+```
 
----
-
-## 주요 기능 및 예제
-
-### 1. 조사 결합
-단순 문자열 비교가 아닌 발음 기반의 처리를 수행합니다.
+## 빠른 시작
 
 ```python
 import hangeul as han
 
-# 영문 약어 발음 인식
-han.attach("SDK", "은/는")  # "SDK는" (에스디케이 - 받침 없음)
-han.attach("IBM", "이/가")  # "IBM이" (아이비엠 - ㅁ받침)
+# 조사 선택 (숫자, 영문 대문자 약어, 괄호 처리)
+print(han.attach("IBM", "이/가"))           # IBM이
+print(han.attach("SDK", "은/는"))           # SDK는
+print(han.attach("7", "으로/로"))           # 7로
+print(han.attach("애플(Apple)", "이/가"))   # 애플(Apple)이
 
-# 숫자 종성 인식
-han.attach("7", "으로/로")  # "7로" (칠 - ㄹ받침 예외)
-han.attach("10", "을/를")  # "10을" (십 - ㅂ받침)
+# 자모 분해와 조합
+print(han.disassemble("값이"))              # ㄱㅏㅂㅅㅇㅣ
+print(han.assemble("ㄱㅏㅂㅅㅇㅣ"))        # 값이
 
-# 괄호 제거 후 판별
-han.attach("애플(Apple)", "이/가")  # "애플(Apple)이"
-```
+# 초성 검색
+print(han.matches("서강대학교", "ㅅㄱㄷ"))  # True
+print(han.search_filter(["사과", "수박", "포도"], "ㅅㅂ"))  # ['수박']
 
-### 2. 조합 및 분해 (Assemble / Disassemble)
-한국어 음운 규칙을 따르는 조립과 완전 분해를 지원합니다.
-
-```python
-# 조합 (연음 법칙 적용)
-han.assemble("ㄱㅏㅂㅅㅇㅣ")  # "값이"
-
-# 분해 (겹받침/복합모음 완전 분리)
-han.disassemble("값")  # "ㄱㅏㅂㅅ"
-han.disassemble("과")  # "ㄱㅗㅏ"
-```
-
-### 3. 유사도 분석 및 검색
-오타에 강한 검색 기능을 구현할 때 유용합니다.
-
-```python
 # 자소 단위 유사도 (0.0 ~ 1.0)
-# '값'과 '갑'은 글자 단위에선 0점이지만 자소 단위에선 0.75점입니다.
-han.similarity("값", "갑")  # 0.75
+print(han.similarity("값", "갑"))           # 0.75
 
-# 초성 검색 및 부분 일치
-han.matches("서강대학교", "ㅅㄱㄷ")  # True
-han.matches("한글", "ㅎㅏㄴ")  # True
+# 숫자 읽기
+print(han.num2han(1234567))                 # 백이십삼만사천오백육십칠
 ```
 
-### 4. 숫자 한글 변환
-숫자 단위를 분석하여 관습적인 한글 읽기 방식으로 변환합니다.
+## API
 
-```python
-han.num2han(1234567)  # "백이십삼만사천오백육십칠"
-han.num2han(10000)    # "만" (일만 -> 만 축약 적용)
+### 조사
+
+| 함수 | 설명 |
+| --- | --- |
+| `get_josa(word, pattern)` | `word` 뒤에 올 조사를 `pattern`(예: `"이/가"`, `"으로/로"`)에서 골라 반환합니다. 패턴의 앞뒤 순서는 상관없습니다. |
+| `attach(word, pattern)` | `word`와 고른 조사를 이어 붙여 반환합니다. |
+
+지원 패턴: 이/가, 은/는, 을/를, 와/과, 아/야, 나/이나, 란/이란, 랑/이랑, 라/이라, 예요/이에요,
+로/으로, 로서/으로서, 로써/으로써, 로부터/으로부터. `로` 계열은 ㄹ 받침 뒤에서 `로`를 고릅니다.
+그 밖의 두 항목 패턴은 `받침 있을 때/받침 없을 때` 순서로 해석합니다.
+마지막 글자가 숫자이면 한국어 읽기(일, 이, 삼...)로, 영문 대문자 약어이면 알파벳 이름(에이, 비, 씨...)으로
+판단합니다. 소문자 영단어는 받침 없음으로 취급하며, 끝의 괄호 부분은 무시합니다.
+
+### 조합과 분해
+
+| 함수 | 설명 |
+| --- | --- |
+| `disassemble(text)` | 완성형 한글을 자모로 분해합니다. 겹받침(`ㄳ`)과 이중모음(`ㅘ`)도 나눕니다. 한글이 아닌 문자는 그대로 둡니다. |
+| `assemble(text)` | 자모열을 완성형 한글로 조합합니다. 겹받침, 이중모음, 연음을 처리합니다. |
+| `qwerty2han(text)` | 두벌식 자판으로 입력한 영문 키 입력을 자모로 바꿉니다 (`"gksrmf"` -> `"ㅎㅏㄴㄱㅡㄹ"`). `assemble`과 함께 쓰면 한/영 전환을 잊고 친 글을 복원할 수 있습니다. |
+
+### 검색과 유사도
+
+| 함수 | 설명 |
+| --- | --- |
+| `get_chosung(text)` | 각 음절의 초성을 추출합니다 (`"한글"` -> `"ㅎㄱ"`). |
+| `matches(target, query, choseong_only=False)` | 검색어가 초성만으로 이루어져 있으면 초성 비교, 아니면 자모 단위 부분 문자열 비교를 합니다. `choseong_only=True`면 검색어도 초성으로 바꿔 비교합니다. |
+| `search_filter(targets, query)` | `matches`를 만족하는 항목만 남긴 리스트를 반환합니다. |
+| `similarity(a, b)` | 두 문자열을 자모로 분해한 뒤 편집 거리로 0.0 ~ 1.0 사이의 유사도를 계산합니다. |
+
+### 문자 판별
+
+| 함수 | 설명 |
+| --- | --- |
+| `is_han(text, allow_space=True, allow_punctuation=False)` | 문자열이 한글(완성형과 호환 자모)로만 이루어졌는지 확인합니다. 공백과 문장 부호 허용 여부를 정할 수 있습니다. |
+| `is_pure_han(text)` | 공백 없이 한글로만 이루어졌는지 확인합니다. |
+| `has_batchim(char)` | 한 음절에 받침이 있는지 확인합니다. |
+| `can_cho(char)`, `can_jung(char)`, `can_jong(char)` | 자모가 초성, 중성, 종성 자리에 올 수 있는지 확인합니다. |
+
+### 숫자
+
+| 함수 | 설명 |
+| --- | --- |
+| `num2han(number)` | 0 이상의 정수(또는 쉼표가 들어간 숫자 문자열)를 한국어 읽기로 바꿉니다. `10000`은 `"만"`, `100000000`은 `"일억"`이 됩니다. |
+
+### 상수
+
+`CHOSOENG`, `JUNGSOENG`, `JONGSOENG`: 유니코드 음절 순서대로 정렬된 초성(19), 중성(21), 종성(28, 첫 항목은 빈 문자열) 튜플.
+
+## 개발
+
+```bash
+uv run pytest
+uv run ruff check .
 ```
 
----
-### 설치
+## 라이선스
 
-```python
-pip install hangeul
-# or
-uv add hangeul
-```
-
-
-## 환경
-* Python 3.10 이상 권장
-* 의존성 없음 (Standard Library Only)
-
-## 기여 및 문의
-버그 리포트나 기능 제안은 이슈 트래커를 이용해 주세요. High Cohesion, Low Coupling 원칙을 준수하며 관리됩니다.
+MIT
