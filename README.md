@@ -104,6 +104,8 @@ uv run pytest
 uv run ruff check .
 ```
 
+함께 보기: [hanfix](https://github.com/NaNIsaac/hanfix) - 한글 자판으로 잘못 친 명령을 다시 실행해 주는 Rust CLI.
+
 ## 라이선스
 
 MIT
