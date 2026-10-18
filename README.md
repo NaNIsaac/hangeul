@@ -4,7 +4,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/hangeul)](https://pypi.org/project/hangeul/)
 [![Python](https://img.shields.io/pypi/pyversions/hangeul)](https://pypi.org/project/hangeul/)
-[![Tests](https://github.com/NaNIsaac/hangeul/actions/workflows/tests.yml/badge.svg)](https://github.com/NaNIsaac/hangeul/actions/workflows/tests.yml)
+[![Tests](https://github.com/NaNIsaac/hangeul/actions/workflows/ci.yml/badge.svg)](https://github.com/NaNIsaac/hangeul/actions/workflows/ci.yml)
 [![License](https://img.shields.io/pypi/l/hangeul)](https://github.com/NaNIsaac/hangeul/blob/main/LICENSE)
 
 **English summary.** `hangeul` is a dependency-free Python library (3.10+) for Korean text:
