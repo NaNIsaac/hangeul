@@ -52,3 +52,17 @@ dev = [
 
 [tool.ruff]
 line-length = 100
+
+# violations present when ruff became mandatory in CI; remove entries as they are fixed
+[tool.ruff.lint.extend-per-file-ignores]
+"src/hangeul/__init__.py" = ["I001", "RUF022"]
+"src/hangeul/check.py" = ["I001"]
+"src/hangeul/constants.py" = ["I001"]
+"src/hangeul/core.py" = ["I001"]
+"src/hangeul/search.py" = ["I001"]
+"src/hangeul/similarity.py" = ["I001"]
+"tests/test_check.py" = ["B017", "I001"]
+"tests/test_core.py" = ["I001"]
+"tests/test_num2han.py" = ["I001"]
+"tests/test_search.py" = ["I001"]
+"tests/test_similarity.py" = ["I001"]
