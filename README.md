@@ -1,33 +1,35 @@
 # hangeul
 
-파이썬용 한글 텍스트 처리 도구 모음입니다.
+A dependency-free Python library (3.10+) for Korean text.
 
 [![PyPI](https://img.shields.io/pypi/v/hangeul)](https://pypi.org/project/hangeul/)
 [![Python](https://img.shields.io/pypi/pyversions/hangeul)](https://pypi.org/project/hangeul/)
 [![Tests](https://github.com/NaNIsaac/hangeul/actions/workflows/ci.yml/badge.svg)](https://github.com/NaNIsaac/hangeul/actions/workflows/ci.yml)
 [![License](https://img.shields.io/pypi/l/hangeul)](https://github.com/NaNIsaac/hangeul/blob/main/LICENSE)
 
-**English summary.** `hangeul` is a dependency-free Python library (3.10+) for Korean text:
-jamo split and assembly (`ㄱㅏㅂㅅㅇㅣ` -> `값이`), particle (josa) selection that handles numbers
-and acronyms (`IBM이`, `7로`), initial-consonant (choseong) search, jamo-level similarity, and
-Korean number reading (`1234` -> `천이백삼십사`).
+[한국어](README.ko.md)
 
-## 설치
+`hangeul` covers jamo split and assembly (`ㄱㅏㅂㅅㅇㅣ` -> `값이`), particle (josa) selection that
+handles numbers and acronyms (`IBM이`, `7로`), initial-consonant (choseong) search, jamo-level
+similarity, and Korean number reading (`1234` -> `천이백삼십사`).
+
+## Install
 
 ```bash
 pip install hangeul
-# 또는
+# or
 uv add hangeul
 ```
 
-설치가 되었는지 확인합니다. 이 명령은 임시 환경에 `hangeul`을 설치해 불러오며, 실패하면 0이 아닌 코드로 끝납니다.
+Check that the install works. This command installs `hangeul` into a temporary environment and
+imports it; it exits non-zero on failure.
 
 <!-- test -->
 ```bash
 uv run --no-project --with hangeul python -c "import hangeul"
 ```
 
-한 줄로 첫 실행도 해 볼 수 있습니다.
+You can also do a first run in one line.
 
 <!-- test console -->
 ```console
@@ -35,94 +37,97 @@ $ uv run --no-project --with hangeul python -X utf8 -c "import hangeul as han; p
 IBM이
 ```
 
-Termux는 CI에서 테스트합니다.
+Termux is tested in CI.
 
-## 빠른 시작
+## Quick start
 
 ```python
 import hangeul as han
 
-# 조사 선택 (숫자, 영문 대문자 약어, 괄호 처리)
+# Josa selection (digits, uppercase acronyms and parentheses are handled)
 print(han.attach("IBM", "이/가"))  # IBM이
 print(han.attach("SDK", "은/는"))  # SDK는
 print(han.attach("7", "으로/로"))  # 7로
 print(han.attach("애플(Apple)", "이/가"))  # 애플(Apple)이
 
-# 자모 분해와 조합
+# Jamo split and assembly
 print(han.disassemble("값이"))  # ㄱㅏㅂㅅㅇㅣ
 print(han.assemble("ㄱㅏㅂㅅㅇㅣ"))  # 값이
 
-# 초성 검색
+# Choseong search
 print(han.matches("서강대학교", "ㅅㄱㄷ"))  # True
 print(han.search_filter(["사과", "수박", "포도"], "ㅅㅂ"))  # ['수박']
 
-# 자소 단위 유사도 (0.0 ~ 1.0)
+# Jamo-level similarity (0.0 to 1.0)
 print(han.similarity("값", "갑"))  # 0.75
 
-# 숫자 읽기
+# Reading numbers
 print(han.num2han(1234567))  # 백이십삼만사천오백육십칠
 ```
 
 ## API
 
-### 조사
+### Josa
 
-| 함수 | 설명 |
+| Function | Description |
 | --- | --- |
-| `get_josa(word, pattern)` | `word` 뒤에 올 조사를 `pattern`(예: `"이/가"`, `"으로/로"`)에서 골라 반환합니다. 패턴의 앞뒤 순서는 상관없습니다. |
-| `attach(word, pattern)` | `word`와 고른 조사를 이어 붙여 반환합니다. |
+| `get_josa(word, pattern)` | Returns the particle that follows `word`, chosen from `pattern` (for example `"이/가"` or `"으로/로"`). The order of the two forms in the pattern does not matter. |
+| `attach(word, pattern)` | Returns `word` joined with the chosen particle. |
 
-지원 패턴: 이/가, 은/는, 을/를, 와/과, 아/야, 나/이나, 란/이란, 랑/이랑, 라/이라, 예요/이에요,
-로/으로, 로서/으로서, 로써/으로써, 로부터/으로부터. `로` 계열은 ㄹ 받침 뒤에서 `로`를 고릅니다.
-그 밖의 두 항목 패턴은 `받침 있을 때/받침 없을 때` 순서로 해석합니다.
-마지막 글자가 숫자이면 한국어 읽기(일, 이, 삼...)로, 영문 대문자 약어이면 알파벳 이름(에이, 비, 씨...)으로
-판단합니다. 소문자 영단어는 받침 없음으로 취급하며, 끝의 괄호 부분은 무시합니다.
+Supported patterns: 이/가, 은/는, 을/를, 와/과, 아/야, 나/이나, 란/이란, 랑/이랑, 라/이라,
+예요/이에요, 로/으로, 로서/으로서, 로써/으로써, 로부터/으로부터. The `로` family picks `로` after a
+ㄹ final consonant. Any other two-form pattern is read as `form after a final consonant / form
+without one`. If the last character is a digit, it is read in Korean (일, 이, 삼...); if it is an
+uppercase acronym, by letter names (에이, 비, 씨...). Lowercase English words count as having no final
+consonant, and a trailing parenthesised part is ignored.
 
-### 조합과 분해
+### Assembly and splitting
 
-| 함수 | 설명 |
+| Function | Description |
 | --- | --- |
-| `disassemble(text)` | 완성형 한글을 자모로 분해합니다. 겹받침(`ㄳ`)과 이중모음(`ㅘ`)도 나눕니다. 한글이 아닌 문자는 그대로 둡니다. |
-| `assemble(text)` | 자모열을 완성형 한글로 조합합니다. 겹받침, 이중모음, 연음을 처리합니다. |
-| `qwerty2han(text)` | 두벌식 자판으로 입력한 영문 키 입력을 자모로 바꿉니다 (`"gksrmf"` -> `"ㅎㅏㄴㄱㅡㄹ"`). `assemble`과 함께 쓰면 한/영 전환을 잊고 친 글을 복원할 수 있습니다. |
+| `disassemble(text)` | Splits precomposed Hangul into jamo, including compound finals (`ㄳ`) and diphthongs (`ㅘ`). Other characters are left as they are. |
+| `assemble(text)` | Assembles a jamo sequence into precomposed Hangul, handling compound finals, diphthongs and liaison. |
+| `qwerty2han(text)` | Converts English keystrokes typed on a Dubeolsik layout into jamo (`"gksrmf"` -> `"ㅎㅏㄴㄱㅡㄹ"`). Together with `assemble` it recovers text typed with the wrong input mode. |
 
-### 검색과 유사도
+### Search and similarity
 
-| 함수 | 설명 |
+| Function | Description |
 | --- | --- |
-| `get_chosung(text)` | 각 음절의 초성을 추출합니다 (`"한글"` -> `"ㅎㄱ"`). |
-| `matches(target, query, choseong_only=False)` | 검색어가 초성만으로 이루어져 있으면 초성 비교, 아니면 자모 단위 부분 문자열 비교를 합니다. `choseong_only=True`면 검색어도 초성으로 바꿔 비교합니다. |
-| `search_filter(targets, query)` | `matches`를 만족하는 항목만 남긴 리스트를 반환합니다. |
-| `similarity(str1, str2)` | 두 문자열을 자모로 분해한 뒤 편집 거리로 0.0 ~ 1.0 사이의 유사도를 계산합니다. |
+| `get_chosung(text)` | Extracts the initial consonant of each syllable (`"한글"` -> `"ㅎㄱ"`). |
+| `matches(target, query, choseong_only=False)` | If the query consists only of initial consonants, compares choseong; otherwise does a jamo-level substring match. With `choseong_only=True` the query is reduced to its choseong first. |
+| `search_filter(targets, query)` | Returns the list of items for which `matches` holds. |
+| `similarity(str1, str2)` | Splits both strings into jamo and computes a similarity between 0.0 and 1.0 from the edit distance. |
 
-### 문자 판별
+### Character checks
 
-| 함수 | 설명 |
+| Function | Description |
 | --- | --- |
-| `is_han(text, allow_space=True, allow_punctuation=False)` | 문자열이 한글(완성형과 호환 자모)로만 이루어졌는지 확인합니다. 공백과 문장 부호 허용 여부를 정할 수 있습니다. |
-| `is_pure_han(text)` | 공백 없이 한글로만 이루어졌는지 확인합니다. |
-| `has_batchim(char)` | 한 음절에 받침이 있는지 확인합니다. |
-| `can_cho(char)`, `can_jung(char)`, `can_jong(char)` | 자모가 초성, 중성, 종성 자리에 올 수 있는지 확인합니다. |
+| `is_han(text, allow_space=True, allow_punctuation=False)` | Checks that a string consists only of Hangul (precomposed syllables and compatibility jamo). Whether spaces and punctuation are allowed is configurable. |
+| `is_pure_han(text)` | Checks that a string consists only of Hangul, with no spaces. |
+| `has_batchim(char)` | Checks whether a syllable has a final consonant. |
+| `can_cho(char)`, `can_jung(char)`, `can_jong(char)` | Check whether a jamo can stand in the initial, medial or final position. |
 
-### 숫자
+### Numbers
 
-| 함수 | 설명 |
+| Function | Description |
 | --- | --- |
-| `num2han(number)` | 0 이상의 정수(또는 쉼표가 들어간 숫자 문자열)를 한국어 읽기로 바꿉니다. `10000`은 `"만"`, `100000000`은 `"일억"`이 됩니다. |
+| `num2han(number)` | Converts a non-negative integer (or a numeric string with commas) to its Korean reading. `10000` becomes `"만"` and `100000000` becomes `"일억"`. |
 
-### 상수
+### Constants
 
-`CHOSOENG`, `JUNGSOENG`, `JONGSOENG`: 유니코드 음절 순서대로 정렬된 초성(19), 중성(21), 종성(28, 첫 항목은 빈 문자열) 튜플.
+`CHOSOENG`, `JUNGSOENG`, `JONGSOENG`: tuples of the initial (19), medial (21) and final (28, the
+first being an empty string) jamo, in Unicode syllable order.
 
-## 개발
+## Development
 
 ```bash
 uv run pytest
 uv run ruff check .
 ```
 
-함께 보기: [hanfix](https://github.com/NaNIsaac/hanfix) - 한글 자판으로 잘못 친 명령을 다시 실행해 주는 Rust CLI.
+See also: [hanfix](https://github.com/NaNIsaac/hanfix), a Rust CLI that reruns a command typed with
+the wrong keyboard layout.
 
-## 라이선스
+## License
 
 MIT
