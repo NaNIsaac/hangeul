@@ -41,8 +41,11 @@ Issues = "https://github.com/NaNIsaac/hangeul/issues"
 Changelog = "https://github.com/NaNIsaac/hangeul/blob/main/CHANGELOG.md"
 
 [build-system]
-requires = ["uv_build>=0.12.7,<0.13"]
-build-backend = "uv_build"
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/hangeul", "README.md", "LICENSE"]
 
 [dependency-groups]
 dev = [
