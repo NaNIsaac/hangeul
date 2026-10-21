@@ -16,9 +16,7 @@ def test_all_exports_resolve():
         assert hasattr(han, name), name
 
 
-@pytest.mark.parametrize(
-    "func", [han.assemble, han.disassemble, han.qwerty2han, han.get_chosung]
-)
+@pytest.mark.parametrize("func", [han.assemble, han.disassemble, han.qwerty2han, han.get_chosung])
 def test_empty_string_roundtrips(func):
     assert func("") == ""
 

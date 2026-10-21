@@ -1,14 +1,15 @@
 from .constants import 초성
 from .core import disassemble
 
+
 def get_chosung(text: str) -> str:
     """
-    문자열에서 초성만 추출합니다. 
+    문자열에서 초성만 추출합니다.
     한글이 아닌 문자는 그대로 유지합니다.
     """
     result = []
     for char in text:
-        if '가' <= char <= '힣':
+        if "가" <= char <= "힣":
             # 초성 인덱스 계산: (유니코드 - 0xAC00) // (21 * 28)
             idx = (ord(char) - 0xAC00) // 588
             result.append(초성[idx])
@@ -16,10 +17,11 @@ def get_chosung(text: str) -> str:
             result.append(char)
     return "".join(result)
 
+
 def matches(target: str, query: str, choseong_only: bool = False) -> bool:
     """
     초성 검색 및 자소 단위 검색을 수행합니다.
-    
+
     Args:
         target: 검색 대상 (예: "서강대학교")
         query: 검색어 (예: "ㅅㄱㄷ" 또는 "서강")
@@ -34,9 +36,10 @@ def matches(target: str, query: str, choseong_only: bool = False) -> bool:
     if is_query_chosung:
         # 대상의 초성과 쿼리를 비교
         return get_chosung(query) in get_chosung(target)
-    
+
     # 2. 완성형/자소가 섞인 경우 자소 단위 분해 검색 (예: "ㅎㅏㄴㄱ" 검색 시 "한글" 매칭)
     return disassemble(query) in disassemble(target)
+
 
 def search_filter(targets: list[str], query: str) -> list[str]:
     """

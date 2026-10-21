@@ -3,10 +3,8 @@ from typing import Literal
 
 from .constants import 초성, 중성, 종성
 
-_NormalizationForm = Literal[
-    "NFC", "NFD", "NFKC", "NFKD",
-    "nfc", "nfd", "nfkc", "nfkd"
-]
+_NormalizationForm = Literal["NFC", "NFD", "NFKC", "NFKD", "nfc", "nfd", "nfkc", "nfkd"]
+
 
 def normalize(text: str, form: _NormalizationForm = "NFC") -> str:
     """
@@ -15,39 +13,44 @@ def normalize(text: str, form: _NormalizationForm = "NFC") -> str:
     """
     return unicodedata.normalize(form.upper(), text)
 
-def is_han(text: str, allow_space: bool = True, allow_punctuation: bool = False) -> bool:    
+
+def is_han(text: str, allow_space: bool = True, allow_punctuation: bool = False) -> bool:
     if not isinstance(text, str) or not text:
         return False
 
     for char in text:
-        if ('가' <= char <= '힣' or 'ㄱ' <= char <= 'ㅣ'):
+        if "가" <= char <= "힣" or "ㄱ" <= char <= "ㅣ":
             continue
         if allow_space and char.isspace():
             continue
-        if allow_punctuation and unicodedata.category(char).startswith('P'):
+        if allow_punctuation and unicodedata.category(char).startswith("P"):
             continue
 
         return False
-        
+
     return True
+
 
 def is_pure_han(text: str) -> bool:
     if not text:
         return False
 
-    return all('가' <= c <= '힣' or 'ㄱ' <= c <= 'ㅣ' for c in text)
+    return all("가" <= c <= "힣" or "ㄱ" <= c <= "ㅣ" for c in text)
+
 
 def can_cho(char: str) -> bool:
     return char in 초성
 
+
 def can_jung(char: str) -> bool:
     return char in 중성
+
 
 def can_jong(char: str) -> bool:
     return char in 종성
 
+
 def has_batchim(char: str) -> bool:
-    if len(char) != 1 or not ('가' <= char <= '힣'):
+    if len(char) != 1 or not ("가" <= char <= "힣"):
         return False
     return (ord(char) - 0xAC00) % 28 > 0
-

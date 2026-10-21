@@ -28,24 +28,24 @@ Termux는 CI에서 테스트합니다.
 import hangeul as han
 
 # 조사 선택 (숫자, 영문 대문자 약어, 괄호 처리)
-print(han.attach("IBM", "이/가"))           # IBM이
-print(han.attach("SDK", "은/는"))           # SDK는
-print(han.attach("7", "으로/로"))           # 7로
-print(han.attach("애플(Apple)", "이/가"))   # 애플(Apple)이
+print(han.attach("IBM", "이/가"))  # IBM이
+print(han.attach("SDK", "은/는"))  # SDK는
+print(han.attach("7", "으로/로"))  # 7로
+print(han.attach("애플(Apple)", "이/가"))  # 애플(Apple)이
 
 # 자모 분해와 조합
-print(han.disassemble("값이"))              # ㄱㅏㅂㅅㅇㅣ
-print(han.assemble("ㄱㅏㅂㅅㅇㅣ"))        # 값이
+print(han.disassemble("값이"))  # ㄱㅏㅂㅅㅇㅣ
+print(han.assemble("ㄱㅏㅂㅅㅇㅣ"))  # 값이
 
 # 초성 검색
 print(han.matches("서강대학교", "ㅅㄱㄷ"))  # True
 print(han.search_filter(["사과", "수박", "포도"], "ㅅㅂ"))  # ['수박']
 
 # 자소 단위 유사도 (0.0 ~ 1.0)
-print(han.similarity("값", "갑"))           # 0.75
+print(han.similarity("값", "갑"))  # 0.75
 
 # 숫자 읽기
-print(han.num2han(1234567))                 # 백이십삼만사천오백육십칠
+print(han.num2han(1234567))  # 백이십삼만사천오백육십칠
 ```
 
 ## API

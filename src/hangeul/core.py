@@ -1,7 +1,4 @@
-from .constants import (
-    초성, 중성, 종성,
-    겹받침맵, 복합모음맵, 쿼티한글맵
-)
+from .constants import 초성, 중성, 종성, 겹받침맵, 복합모음맵, 쿼티한글맵
 
 # 성능을 위한 인덱스 맵 미리 생성 (O(1) lookup)
 _CHO_IDX = {char: i for i, char in enumerate(초성)}
@@ -10,9 +7,11 @@ _JONG_IDX = {char: i for i, char in enumerate(종성)}
 _SPLIT_JONG_MAP = {v: k for k, v in 겹받침맵.items()}
 _SPLIT_JUNG_MAP = {v: k for k, v in 복합모음맵.items()}
 
+
 def qwerty2han(text: str) -> str:
     """영문 쿼티 문자열을 한글 자모 문자열로 변환합니다."""
     return "".join(쿼티한글맵.get(char, char) for char in text)
+
 
 def assemble(text: str) -> str:
     """자소 단위로 분리된 문자열을 완성형 한글로 조합합니다."""
@@ -70,8 +69,12 @@ def assemble(text: str) -> str:
                     cho_idx, jung_idx, jong_idx = _CHO_IDX[s_cho], _JUNG_IDX[char], 0
                 else:  # 일반 받침은 다음 초성으로 이동
                     result.append(make_syllable(cho_idx, jung_idx, 0))
-                    cho_idx, jung_idx, jong_idx = _CHO_IDX.get(cur_jong_char, -1), _JUNG_IDX[char], 0
-            
+                    cho_idx, jung_idx, jong_idx = (
+                        _CHO_IDX.get(cur_jong_char, -1),
+                        _JUNG_IDX[char],
+                        0,
+                    )
+
             elif cho_idx != -1:  # 초성만 있는 상태에서 모음
                 if jung_idx == -1:
                     jung_idx = _JUNG_IDX[char]
@@ -102,6 +105,7 @@ def assemble(text: str) -> str:
     flush()
     return "".join(result)
 
+
 def disassemble(text: str) -> str:
     """
     완성형 한글 문자열을 개별 자소 단위로 완전히 분리합니다.
@@ -111,7 +115,7 @@ def disassemble(text: str) -> str:
 
     for char in text:
         # 1. 완성형 한글인 경우 (가 ~ 힣)
-        if '가' <= char <= '힣':
+        if "가" <= char <= "힣":
             num = ord(char) - 0xAC00
             c = num // 588
             r = (num % 588) // 28
@@ -134,7 +138,7 @@ def disassemble(text: str) -> str:
                     result.extend(_SPLIT_JONG_MAP[jong_char])
                 else:
                     result.append(jong_char)
-        
+
         # 2. 이미 분리된 자제나 기타 문자인 경우
         else:
             if char in _SPLIT_JUNG_MAP:
@@ -146,15 +150,16 @@ def disassemble(text: str) -> str:
 
     return "".join(result)
 
+
 if __name__ == "__main__":
     # 1. 복합 문자 분리 테스트
     print(disassemble("값이"))  # 결과: "ㄱㅏㅂㅅㅇㅣ"
-    
+
     # 2. 역변환 (Round-trip) 테스트
     raw = "값이"
     dis = disassemble(raw)
     ass = assemble(dis)
     print(f"{raw} -> {dis} -> {ass}")  # 결과: 값이 -> ㄱㅏㅂㅅㅇㅣ -> 값이
-    
+
     # 3. 복합 모음 테스트
     print(disassemble("왜 뭐가"))
