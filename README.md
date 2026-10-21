@@ -20,6 +20,21 @@ pip install hangeul
 uv add hangeul
 ```
 
+설치가 되었는지 확인합니다. 이 명령은 임시 환경에 `hangeul`을 설치해 불러오며, 실패하면 0이 아닌 코드로 끝납니다.
+
+<!-- test -->
+```bash
+uv run --no-project --with hangeul python -c "import hangeul"
+```
+
+한 줄로 첫 실행도 해 볼 수 있습니다.
+
+<!-- test console -->
+```console
+$ uv run --no-project --with hangeul python -X utf8 -c "import hangeul as han; print(han.attach('IBM', '이/가'))"
+IBM이
+```
+
 Termux는 CI에서 테스트합니다.
 
 ## 빠른 시작
