@@ -20,6 +20,8 @@ pip install hangeul
 uv add hangeul
 ```
 
+Termux는 CI에서 테스트합니다.
+
 ## 빠른 시작
 
 ```python
