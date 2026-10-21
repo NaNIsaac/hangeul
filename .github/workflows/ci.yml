@@ -22,3 +22,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: uv run ruff check .
       - run: uv run pytest
+
+  # The publish workflow only runs on tags; building here catches a broken backend first.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.0
+      - run: uv build
+      - run: uv run --isolated --no-project --with dist/*.whl python -c "import hangeul"
