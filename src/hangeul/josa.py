@@ -2,7 +2,6 @@ import re
 from types import MappingProxyType
 from typing import Final
 
-# 1. 상수 정의
 _JOSA_MAP: Final = MappingProxyType(
     {
         "이/가": ("가", "이"),
@@ -72,30 +71,29 @@ def _analyze_last_char(word: str) -> tuple[bool, int]:
     if not word:
         return False, -1
 
-    # 1. 괄호 제거: "단어(Content)" -> "단어" 추출
+    # 괄호 제거: "단어(Content)" -> "단어" 추출
     base_word = re.sub(r"\(.*\)$", "", word).strip()
     if not base_word:
         base_word = word
     last = base_word[-1]
 
-    # 2. 한글 분석
     if "가" <= last <= "힣":
         idx = _get_jong_idx(last)
         return idx > 0, idx
 
-    # 3. 숫자 분석 (0, 1, 3, 6, 7, 8 은 받침 있음 / 1, 7, 8 은 'ㄹ' 계열)
+    # 숫자 분석 (0, 1, 3, 6, 7, 8 은 받침 있음 / 1, 7, 8 은 'ㄹ' 계열)
     if last.isdigit():
         has_bat = last in "013678"
         return has_bat, (8 if last in "178" else (1 if has_bat else 0))
 
-    # 4. 영문 대문자 약어 분석 (예: SDK, AI, SQL)
+    # 영문 대문자 약어 분석 (예: SDK, AI, SQL)
     if base_word.isupper() and "A" <= last <= "Z":
         pronunciation = _ALPHABET_BATTCHIM.get(last, "")
         if pronunciation:
             idx = _get_jong_idx(pronunciation[-1])
             return idx > 0, idx
 
-    # 5. 기타 (일반 영문 단어, 특수문자 등)는 받침 없음으로 간주
+    # 기타 (일반 영문 단어, 특수문자 등)는 받침 없음으로 간주
     return False, 0
 
 

@@ -30,14 +30,14 @@ def matches(target: str, query: str, choseong_only: bool = False) -> bool:
     if not query:
         return False
 
-    # 1. 검색어가 순수 초성인지 확인 (또는 강제 초성 모드)
+    # 검색어가 순수 초성인지 확인 (또는 강제 초성 모드)
     is_query_chosung = choseong_only or all(c in 초성 for c in query)
 
     if is_query_chosung:
         # 대상의 초성과 쿼리를 비교
         return get_chosung(query) in get_chosung(target)
 
-    # 2. 완성형/자소가 섞인 경우 자소 단위 분해 검색 (예: "ㅎㅏㄴㄱ" 검색 시 "한글" 매칭)
+    # 완성형/자소가 섞인 경우 자소 단위 분해 검색 (예: "ㅎㅏㄴㄱ" 검색 시 "한글" 매칭)
     return disassemble(query) in disassemble(target)
 
 
