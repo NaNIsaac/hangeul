@@ -32,7 +32,6 @@ def assemble(text: str) -> str:
         cho_idx, jung_idx, jong_idx = -1, -1, 0
 
     for char in text:
-        # 1. 자음 처리
         if char in _CHO_IDX or char in _JONG_IDX:
             if cho_idx != -1 and jung_idx != -1:
                 if jong_idx == 0:  # 현재 받침 없음
@@ -58,7 +57,6 @@ def assemble(text: str) -> str:
                 else:
                     result.append(char)
 
-        # 2. 모음 처리
         elif char in _JUNG_IDX:
             # 받침이 있는 상태에서 모음이 오면 연음 처리 (예: 값이 -> 갑시)
             if jong_idx != 0:
@@ -97,7 +95,7 @@ def assemble(text: str) -> str:
                 else:
                     jung_idx = _JUNG_IDX[char]
 
-        # 3. 기타 문자 (숫자, 영문, 특수문자 등)
+        # 기타 문자 (숫자, 영문, 특수문자 등)
         else:
             flush()
             result.append(char)
@@ -114,7 +112,6 @@ def disassemble(text: str) -> str:
     result: list[str] = []
 
     for char in text:
-        # 1. 완성형 한글인 경우 (가 ~ 힣)
         if "가" <= char <= "힣":
             num = ord(char) - 0xAC00
             c = num // 588
@@ -139,7 +136,7 @@ def disassemble(text: str) -> str:
                 else:
                     result.append(jong_char)
 
-        # 2. 이미 분리된 자제나 기타 문자인 경우
+        # 이미 분리된 자제나 기타 문자인 경우
         else:
             if char in _SPLIT_JUNG_MAP:
                 result.extend(_SPLIT_JUNG_MAP[char])
@@ -152,14 +149,14 @@ def disassemble(text: str) -> str:
 
 
 if __name__ == "__main__":
-    # 1. 복합 문자 분리 테스트
+    # 복합 문자 분리 테스트
     print(disassemble("값이"))  # 결과: "ㄱㅏㅂㅅㅇㅣ"
 
-    # 2. 역변환 (Round-trip) 테스트
+    # 역변환 (Round-trip) 테스트
     raw = "값이"
     dis = disassemble(raw)
     ass = assemble(dis)
     print(f"{raw} -> {dis} -> {ass}")  # 결과: 값이 -> ㄱㅏㅂㅅㅇㅣ -> 값이
 
-    # 3. 복합 모음 테스트
+    # 복합 모음 테스트
     print(disassemble("왜 뭐가"))
