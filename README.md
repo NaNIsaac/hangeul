@@ -13,6 +13,10 @@ A dependency-free Python library (3.10+) for Korean text.
 handles numbers and acronyms (`IBM이`, `7로`), initial-consonant (choseong) search, jamo-level
 similarity, and Korean number reading (`1234` -> `천이백삼십사`).
 
+![Four input-output examples for jamo decomposition, particle selection, choseong matching and Korean numbers](docs/media/readme-examples.svg)
+
+*Illustrative SVG, not a captured terminal session or measured experimental result.*
+
 ## Install
 
 ```bash
