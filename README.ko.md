@@ -9,6 +9,10 @@
 
 [English](README.md)
 
+![자모 분해, 조사 선택, 초성 검색, 숫자 읽기를 입력과 출력으로 비교한 도식](docs/media/readme-examples.svg)
+
+*개념 설명용 SVG이며 실제 실험 데이터나 터미널 캡처가 아닙니다.*
+
 ## 설치
 
 ```bash
