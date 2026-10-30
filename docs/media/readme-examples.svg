@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="490" viewBox="0 0 1200 490" role="img" aria-labelledby="title description"><title id="title">hangeul Python library input to output examples</title><desc id="description">Four transformations: jamo decomposition, josa selection, choseong matching, and Korean number reading. These examples are from the README.</desc>
+<rect x="0" y="0" width="1200" height="490" rx="0" fill="#f8fbfd" stroke="#f8fbfd" stroke-width="2"/>
+<text x="36" y="53" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="30" font-weight="700" fill="#133750">hangeul / what each helper transforms</text>
+<text x="36" y="81" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="18" font-weight="400" fill="#4a6c85">One library: compose, attach, search and read Korean text.</text>
+<rect x="34" y="110" width="546" height="153" rx="15" fill="#fff" stroke="#d1e1ec" stroke-width="2"/>
+<text x="53" y="146" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="700" fill="#1a6897">Jamo split</text>
+<text x="53" y="177" font-family="Consolas, monospace" font-size="15" font-weight="400" fill="#507289">disassemble('값이')</text>
+<text x="54" y="218" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="400" fill="#244860">값이</text>
+<text x="289" y="219" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="27" font-weight="700" fill="#2b85b1">→</text>
+<text x="347" y="219" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="21" font-weight="700" fill="#113d60">ㄱㅏㅂㅅㅇㅣ</text>
+<rect x="619" y="110" width="546" height="153" rx="15" fill="#fff" stroke="#d1e1ec" stroke-width="2"/>
+<text x="638" y="146" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="700" fill="#1a6897">Josa selection</text>
+<text x="638" y="177" font-family="Consolas, monospace" font-size="15" font-weight="400" fill="#507289">attach('IBM', '이/가')</text>
+<text x="639" y="218" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="400" fill="#244860">IBM + 이/가</text>
+<text x="874" y="219" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="27" font-weight="700" fill="#2b85b1">→</text>
+<text x="932" y="219" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="21" font-weight="700" fill="#113d60">IBM이</text>
+<rect x="34" y="288" width="546" height="153" rx="15" fill="#fff" stroke="#d1e1ec" stroke-width="2"/>
+<text x="53" y="324" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="700" fill="#1a6897">Choseong search</text>
+<text x="53" y="355" font-family="Consolas, monospace" font-size="15" font-weight="400" fill="#507289">matches('서강대학교', 'ㅅㄱㄷ')</text>
+<text x="54" y="396" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="400" fill="#244860">서강대학교 + ㅅㄱㄷ</text>
+<text x="289" y="397" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="27" font-weight="700" fill="#2b85b1">→</text>
+<text x="347" y="397" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="21" font-weight="700" fill="#113d60">True</text>
+<rect x="619" y="288" width="546" height="153" rx="15" fill="#fff" stroke="#d1e1ec" stroke-width="2"/>
+<text x="638" y="324" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="700" fill="#1a6897">Number reading</text>
+<text x="638" y="355" font-family="Consolas, monospace" font-size="15" font-weight="400" fill="#507289">num2han(1234)</text>
+<text x="639" y="396" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="20" font-weight="400" fill="#244860">1234</text>
+<text x="874" y="397" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="27" font-weight="700" fill="#2b85b1">→</text>
+<text x="932" y="397" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="21" font-weight="700" fill="#113d60">천이백삼십사</text>
+<text x="34" y="474" font-family="Noto Sans CJK KR, Malgun Gothic, Arial, sans-serif" font-size="15" font-weight="400" fill="#5f788b">Examples shown are documented transformations, not a terminal screenshot.</text></svg>
