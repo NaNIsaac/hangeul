@@ -4,21 +4,24 @@ on:
   push:
     tags:
       - "v*"
+  # Runs the gates alone, without an upload, to check them off a tag.
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.3.3
-      - run: uv run ruff check .
-      - run: uv run pytest
+  gates:
+    uses: NaNIsaac/.github/.github/workflows/publish-gates.yml@284b0786020434df16b096a3e11c56c6331dd81f
+    permissions:
+      contents: read
+    with:
+      import-name: hangeul
+      test-command: uv run ruff check . && uv run pytest
 
   publish:
-    needs: test
+    needs: gates
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: release
     permissions:
@@ -33,5 +36,9 @@ jobs:
             echo "Tag $GITHUB_REF_NAME does not match pyproject version $version" >&2
             exit 1
           fi
-      - run: uv build
+      # The files the gates checked, not a new build
+      - uses: actions/download-artifact@v8
+        with:
+          name: publish-gates-dist
+          path: dist
       - uses: pypa/gh-action-pypi-publish@release/v1
